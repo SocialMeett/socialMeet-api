@@ -18,4 +18,4 @@ const friendRequestSchema = new Schema(
 
 friendRequestSchema.plugin(toJSON);
 
-export const FriendRequestModel = model("FriendRequest", friendRequestSchema);
+export const FriendRequestModel = model("friendRequest", friendRequestSchema);

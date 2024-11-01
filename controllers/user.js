@@ -86,10 +86,9 @@ export const updateProfile = (req, res, next) => {
 
 export const getUserProfile = async (req, res, next) => {
   try {
-    const user = await UserModel.findById(req.auth.id).populate(
-      "friends fullName location email"
-    );
-    Selection({ password: false });
+    const user = await UserModel.findById(req.auth.id)
+      .populate("friends fullName location email")
+      .select({ password: false });
 
     res.json(user);
   } catch (error) {
