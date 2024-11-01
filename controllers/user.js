@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import {
   loginUserValidation,
   registerUserValidation,
+  updateProfileValidation,
 } from "../validation/user.js";
 
 export const registerUser = async (req, res, next) => {
@@ -71,4 +72,31 @@ export const loginUser = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const updateProfile = (req, res, next) => {
+  try {
+    const { error, value } = updateProfileValidation.validate(req.body);
+
+    res.json("Profile updated");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserProfile = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.auth.id).populate(
+      "friends fullName location email"
+    );
+    Selection({ password: false });
+
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logoutUser = (req, res, next) => {
+  res.json("User Logged Out");
 };

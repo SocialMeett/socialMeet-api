@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { loginUser, registerUser } from "../controllers/user.js";
+import { getUserProfile, loginUser, logoutUser, registerUser, updateProfile } from "../controllers/user.js";
+import { isAuthenticated } from "../middlewares/auth.js";
 
 
 
@@ -10,7 +11,15 @@ const userRouter =Router();
 // define routes
 userRouter.post('/users/register', registerUser),
 
-userRouter.post('/users/login', loginUser)
+userRouter.post('/users/login', loginUser),
+
+userRouter.get('/users/me', isAuthenticated, getUserProfile),
+
+userRouter.patch('/users/me', isAuthenticated ,updateProfile),
+
+userRouter.get('/users/logout', isAuthenticated, logoutUser)
+
+
 
 
 export default userRouter;
