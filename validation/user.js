@@ -8,6 +8,7 @@ export const registerUserValidation = Joi.object({
     password: Joi.string().required(),
     friends: Joi.string().optional(),
     location: Joi.string().required(),
+    role:Joi.string().valid('admin','member')
 });
 
 
