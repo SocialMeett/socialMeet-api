@@ -1,30 +1,35 @@
-import {expressjwt} from 'express-jwt';
-import { UserModel } from '../models/user.js';
-
-
+import { expressjwt } from "express-jwt";
+import { UserModel } from "../models/user.js";
+import { permissions } from "../utils/rbac.js";
 
 export const isAuthenticated = expressjwt({
-    secret: process.env.JWT_PRIVATE_KEY,
-    algorithms:['HS256'],
+  secret: process.env.JWT_PRIVATE_KEY,
+  algorithms: ["HS256"],
 });
 
-
-// find the user from the database
-
-// export const findUser = async (req, res, next) => {
-//     try {
-
-//         // It's just using the authenticated ID to find the user in the database from the token
-//         const user = await UserModel.findById(req.auth.id);
-
-//         // if using is not found return this response
-//         if (!user) 
-//             return res.status(404).json('User does not exist');
-
-//         // if the user is found resturn this res
-//         req.user = user;
-//         next()
-//     } catch (error) {
-//         next(eror)
-//     }
-// }
+export const hasPermission = (action) => {
+  return async (req, res, next) => {
+    // find the user in the database
+    try {
+      if (!req.auth) {
+        return res.status(401).json('unauthorized');
+      }
+      const user = await UserModel.findById(req.auth.id);
+      // use member role to find what permission they can take
+      const permission = permissions.find((value) => value.role === user.role);
+      if (!permission) {
+        return res.status(403).json("no permission found");
+      }
+      // check if permission action includes the action
+      // console.log(permission)
+      if (permission.actions.includes(action)) {
+        next();
+      } else {
+        res.status(403).json("Action not allowed");
+      }
+      // console.log(req.auth);
+    } catch (error) {
+      next(error);
+    }
+  };
+};
