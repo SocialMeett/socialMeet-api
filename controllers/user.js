@@ -29,12 +29,25 @@ export const registerUser = async (req, res, next) => {
 
     const hashedPassword = bcrypt.hashSync(value.password, 10);
 
-    await UserModel.create({
+    const newUser = await UserModel.create({
       ...value,
       password: hashedPassword,
     });
 
-    return res.status(201).json("user created successfully");
+    const token = jwt.sign(
+      {
+        id: newUser._id,
+      },
+      process.env.JWT_PRIVATE_KEY,
+
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    return res
+      .status(201)
+      .json({ message: "user created successfully", accessToken: token });
   } catch (error) {
     next(error);
   }

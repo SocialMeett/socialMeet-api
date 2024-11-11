@@ -10,11 +10,6 @@ await mongoose.connect(process.env.MONGO_URI);
 // create express app
 const app = express();
 
-// // create a single http server using the express app
-// const server = http.createServer(app);
-
-// set up the socket.io  on the same server
-
 // use middlewares
 app.use(express.json());
 app.use(cors());
