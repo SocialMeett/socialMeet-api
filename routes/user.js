@@ -15,7 +15,7 @@ userRouter.post('/users/login', loginUser),
 
 userRouter.get('/users/me', isAuthenticated, getUserProfile),
 
-userRouter.patch('/users/me', isAuthenticated ,updateProfile),
+userRouter.patch('/users/:id', isAuthenticated ,updateProfile),
 
 userRouter.get('/users/logout', isAuthenticated, logoutUser)
 

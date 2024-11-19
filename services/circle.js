@@ -29,7 +29,11 @@ export const createCircleService = async (adminId, circleName) => {
 
 export const joinCircleService = async (userId, inviteCode) => {
   // find circle
-  const circle = await CircleModel.findOne({ inviteCode });
+  const circle = await CircleModel.findOne({
+    inviteCode,
+  });
+  // console.log(circle);
+
   if (!circle) {
     return { error: "invite code not found" };
   }
@@ -42,22 +46,34 @@ export const joinCircleService = async (userId, inviteCode) => {
   if (existingMember) {
     return { error: "User is already a member" };
   }
+
   //   add user to circle
   circle.members.push(userId);
 
-  // sit ave the circle
+  // save the circle
   await circle.save();
 
-  return circle;
+  return { message: "User added to the circle successfully", circle };
 };
 
 // delete a circle
 export const deleteCircleService = async (circleId) => {
-  const circle = await CircleModel.findById(circleId);
+  const circle = await CircleModel.findByIdAndDelete(circleId);
   if (!circle) {
     return { error: "circle not found" };
   }
-  await circle.remove();
+  return { message: "Circle was deleted successfully" };
+};
+
+export const getCircleService = async (circleId) => {
+  const getCircle = await CircleModel.findById(circleId).populate("members");
+  // check if circle is found
+  if (!getCircle) {
+    return { error: "Circle not found" };
+  }
+  return getCircle;
+  // add circle name to response
+  // circleId.name.push()
 };
 
 // add a member to the circle

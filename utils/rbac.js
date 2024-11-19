@@ -7,6 +7,7 @@ export const permissions = [
       "join_circle",
       "share_location",
       "view_location",
+      "get_circle"
     ],
   },
   {

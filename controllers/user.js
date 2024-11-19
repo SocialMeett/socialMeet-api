@@ -63,7 +63,7 @@ export const loginUser = async (req, res, next) => {
     }
     const user = await UserModel.findOne({ email: value.email });
     if (!user) {
-      return res.staus(404).json("Access denied");
+      return res.status(404).json("Access denied");
     }
     // compare the password
     const correctPassword = bcrypt.compareSync(value.password, user.password);
@@ -87,11 +87,25 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-export const updateProfile = (req, res, next) => {
+export const updateProfile = async (req, res, next) => {
   try {
-    const { error, value } = updateProfileValidation.validate(req.body);
+    const { error, value } = updateProfileValidation.validate(
+      req.body,
+      { new: true }
+    );
+    // if error return 422
+    if (error) {
+      return res.status(422).json(error);
+    }
+    // update user profile
+    const user = await UserModel.findByIdAndUpdate(req.auth.id, value, {
+      new: true,
+    });
 
-    res.json("Profile updated");
+    if (!user) {
+      return res.status(404).json("Access denied");
+    }
+    res.json(user);
   } catch (error) {
     next(error);
   }

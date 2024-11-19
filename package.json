@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.16.1",
     "@reis/mongoose-to-json": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

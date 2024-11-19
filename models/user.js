@@ -6,9 +6,9 @@ const userSchema = new Schema(
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    friends: [{ type: Types.ObjectId, ref: "user" }],
+    circle: [{ type: Types.ObjectId, ref: "circle" }],
     role: { type: String, enum: ["admin", "member"], default: "member" },
-    // location: {type:String, }
+    location: { type: String },
   },
   {
     timestamps: true,
@@ -17,4 +17,4 @@ const userSchema = new Schema(
 
 userSchema.plugin(toJSON);
 
-export const UserModel = model("user", userSchema);
+export const UserModel = model("User", userSchema);
