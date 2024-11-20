@@ -6,6 +6,8 @@ import {
   registerUserValidation,
   updateProfileValidation,
 } from "../validation/user.js";
+import { mailTransporter } from "../utils/mail.js";
+import { generateEmailTemplate } from "../utils/template.js";
 
 export const registerUser = async (req, res, next) => {
   // validate user first
@@ -44,7 +46,16 @@ export const registerUser = async (req, res, next) => {
         expiresIn: "24h",
       }
     );
-    
+
+    const emailContent = ` <p>Dear ${value.fullName},<p>
+    <p style='color:#E95330;'>Thank you for registering on TrackMeet!`;
+
+    await mailTransporter.sendMail({
+      from: "TrackMeet <trackmeett@gmail.com>",
+      to: value.email,
+      subject: "User Registration",
+      html: generateEmailTemplate(emailContent),
+    });
 
     return res
       .status(201)
