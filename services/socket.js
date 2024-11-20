@@ -10,7 +10,7 @@ export const handleEvents = (socket, io) => {
     console.log(`User ${socket} joined circle ${circleId}`);
     // adding user to specific circle
     socket.join(circleId);
-    io.to(circleId).emit("circle:jon", `User ${socket.id} joined the circle`);
+    io.to(circleId).emit("circle:join", `User ${socket.id} joined the circle`);
   });
 
   // handle disconnection, triggered when user disconnects from the server

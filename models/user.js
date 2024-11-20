@@ -6,9 +6,10 @@ const userSchema = new Schema(
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    circle: [{ type: Types.ObjectId, ref: "circle" }],
+    circle: [{ type: Types.ObjectId, ref: "Circle" }],
     role: { type: String, enum: ["admin", "member"], default: "member" },
-    location: { type: String },
+    latitude: { type: Number },
+    longitude: { type: Number },
   },
   {
     timestamps: true,

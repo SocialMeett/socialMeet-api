@@ -44,6 +44,7 @@ export const registerUser = async (req, res, next) => {
         expiresIn: "24h",
       }
     );
+    
 
     return res
       .status(201)
@@ -89,10 +90,9 @@ export const loginUser = async (req, res, next) => {
 
 export const updateProfile = async (req, res, next) => {
   try {
-    const { error, value } = updateProfileValidation.validate(
-      req.body,
-      { new: true }
-    );
+    const { error, value } = updateProfileValidation.validate(req.body, {
+      new: true,
+    });
     // if error return 422
     if (error) {
       return res.status(422).json(error);
@@ -113,9 +113,32 @@ export const updateProfile = async (req, res, next) => {
 
 export const getUserProfile = async (req, res, next) => {
   try {
+    // find user by id and populate
     const user = await UserModel.findById(req.auth.id)
-      // .populate("friends fullName location email")
+      .populate({ path: "circle", select: "name" })
       .select({ password: false });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // retreive circle id from the request body
+    // const circleId = req.body;
+
+    // validate circle id if it exists
+    // if (!circleId) {
+    //   return res.status(400).json({ message: "CircleId is required" });
+    // }
+
+    // check if circleID already exists in the users circle
+    // if (user.circle.includes(circleId)) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "circle has been assigned already" });
+    // }
+
+    // user.circle.push(circleId);
+
+    // await user.save();
 
     res.json(user);
   } catch (error) {

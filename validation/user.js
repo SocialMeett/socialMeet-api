@@ -5,7 +5,8 @@ export const registerUserValidation = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   friends: Joi.string().optional(),
-  location: Joi.string().required(),
+  latitude: Joi.number().required(),
+  longitude: Joi.number().required(),
   role: Joi.string().valid("admin", "member"),
 });
 
@@ -15,6 +16,9 @@ export const loginUserValidation = Joi.object({
 });
 
 export const updateProfileValidation = Joi.object({
-  location: Joi.string(),
+  fullName:Joi.string(),
+  password:Joi.string(),
+  latitude: Joi.number(),
+  longitude: Joi.number(),
   role: Joi.string().valid("admin", "member"),
 });
