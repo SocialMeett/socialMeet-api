@@ -10,4 +10,5 @@ export const mailTransporter = createTransport({
     },
 
 
-})
+});
+

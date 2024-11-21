@@ -20,6 +20,7 @@ export const createCircleService = async (adminId, circleName) => {
     admin: admin._id,
     members: [admin._id],
     inviteCode,
+    // const inviteCodeMail = () => {}
   });
 
   return newCircle;

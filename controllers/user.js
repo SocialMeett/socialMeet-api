@@ -50,12 +50,16 @@ export const registerUser = async (req, res, next) => {
     const emailContent = ` <p>Dear ${value.fullName},<p>
     <p style='color:#E95330;'>Thank you for registering on TrackMeet!`;
 
-    await mailTransporter.sendMail({
-      from: "TrackMeet <trackmeett@gmail.com>",
-      to: value.email,
-      subject: "User Registration",
-      html: generateEmailTemplate(emailContent),
-    });
+   try {
+     await mailTransporter.sendMail({
+       from: "TrackMeet <trackmeett@gmail.com>",
+       to: value.email,
+       subject: "User Registration",
+       html: generateEmailTemplate(emailContent),
+     })
+   } catch (emailError) {
+    return res.status(500).json({message: 'Confirmation email failed to send'})
+   };
 
     return res
       .status(201)
