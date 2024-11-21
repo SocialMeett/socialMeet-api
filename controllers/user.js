@@ -56,10 +56,11 @@ export const registerUser = async (req, res, next) => {
        to: value.email,
        subject: "User Registration",
        html: generateEmailTemplate(emailContent),
-     })
-   } catch (emailError) {
-    return res.status(500).json({message: 'Confirmation email failed to send'})
-   };
+     });
+   } catch (mailError) {
+    console.error(mailError);
+    return res.status(500).json("Error sending email");
+   }
 
     return res
       .status(201)
