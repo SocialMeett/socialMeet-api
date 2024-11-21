@@ -3,12 +3,12 @@ import { UserModel } from "../models/user.js";
 import crypto from "crypto";
 
 // create a circle
-export const createCircleService = async (adminId, circleName) => {
-  // find the user creating the circle,(the admin)
+export const createCircleService = async (userId, circleName) => {
+  // find the user creating the circle,
 
-  const admin = await UserModel.findById(adminId);
-  if (!admin) {
-    return { error: "Admin not found" };
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    return { error: "User not found" };
   }
 
   // generate a unique invite code
@@ -16,9 +16,9 @@ export const createCircleService = async (adminId, circleName) => {
   // create a new circle
   const newCircle = await CircleModel.create({
     name: circleName,
-    // admin._id refers to just the id of the admin from the database
-    admin: admin._id,
-    members: [admin._id],
+    // user._id refers to the person who creates a circle becomes an admin
+    admin: user._id,
+    members: [user._id],
     inviteCode,
     // const inviteCodeMail = () => {}
   });
