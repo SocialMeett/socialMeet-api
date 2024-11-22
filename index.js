@@ -6,6 +6,7 @@ import circleRouter from "./routes/circle.js";
 import { Server } from "socket.io";
 import http from "http";
 import { handleEvents } from "./services/socket.js";
+import locationRouter from "./routes/location.js";
 
 // connect to database
 await mongoose.connect(process.env.MONGO_URI);
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use(cors());
 app.use(userRouter);
 app.use(circleRouter);
+app.use(locationRouter);
 
 // create and listen on server
 

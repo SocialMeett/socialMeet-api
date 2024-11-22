@@ -50,17 +50,17 @@ export const registerUser = async (req, res, next) => {
     const emailContent = ` <p>Dear ${value.fullName},<p>
     <p style='color:#E95330;'>Thank you for registering on TrackMeet!`;
 
-   try {
-     await mailTransporter.sendMail({
-       from: "TrackMeet <trackmeett@gmail.com>",
-       to: value.email,
-       subject: "User Registration",
-       html: generateEmailTemplate(emailContent),
-     });
-   } catch (mailError) {
-    console.error(mailError);
-    return res.status(500).json("Error sending email");
-   }
+    try {
+      await mailTransporter.sendMail({
+        from: "TrackMeet <trackmeett@gmail.com>",
+        to: value.email,
+        subject: "User Registration",
+        html: generateEmailTemplate(emailContent),
+      });
+    } catch (mailError) {
+      console.error(mailError);
+      return res.status(500).json("Error sending email");
+    }
 
     return res
       .status(201)
@@ -131,8 +131,11 @@ export const getUserProfile = async (req, res, next) => {
   try {
     // find user by id and populate
     const user = await UserModel.findById(req.auth.id)
-      .populate({ path: "circle", select: "name" })
-      .select({ password: false });
+      .populate({
+        path: "circle",
+        select: "name inviteCode members admin",
+      })
+      .select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

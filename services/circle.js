@@ -54,6 +54,13 @@ export const joinCircleService = async (userId, inviteCode) => {
   // save the circle
   await circle.save();
 
+  // Update user's circle array
+  await UserModel.findByIdAndUpdate(
+    userId,
+    { $addToSet: { circle: circle._id } },
+    { new: true }
+  );
+
   return { message: "User added to the circle successfully", circle };
 };
 
