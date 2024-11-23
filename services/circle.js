@@ -74,7 +74,13 @@ export const deleteCircleService = async (circleId) => {
 };
 
 export const getCircleService = async (circleId) => {
-  const getCircle = await CircleModel.findById(circleId).populate("members");
+  const getCircle = await CircleModel.findById(circleId)
+  .populate({
+    path: "members",
+    select: "fullName email ",
+  }).select({
+    password: false,
+  })
   // check if circle is found
   if (!getCircle) {
     return { error: "Circle not found" };

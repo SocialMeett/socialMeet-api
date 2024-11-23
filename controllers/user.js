@@ -133,9 +133,11 @@ export const getUserProfile = async (req, res, next) => {
     const user = await UserModel.findById(req.auth.id)
       .populate({
         path: "circle",
-        select: "name inviteCode members admin",
+        select: "name inviteCode",
+      }).select({
+        password: false,
       })
-      .select("-password");
+;
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

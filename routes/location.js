@@ -5,6 +5,6 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 const locationRouter = Router();
 
-locationRouter.get('/users/location', isAuthenticated,getLocation);
+locationRouter.get('/users/location/:id', isAuthenticated,getLocation);
 
 export default locationRouter;
