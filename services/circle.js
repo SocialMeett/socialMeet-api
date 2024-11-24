@@ -74,10 +74,12 @@ export const deleteCircleService = async (circleId) => {
 };
 
 export const getCircleService = async (circleId) => {
-  const getCircle = await CircleModel.findById(circleId)
+  const getCircle = await CircleModel.findById(circleId).populate({path:'admin',
+    select:'fullName'
+  })
   .populate({
     path: "members",
-    select: "fullName email ",
+    select: "fullName email latitude longitude ",
   }).select({
     password: false,
   })
